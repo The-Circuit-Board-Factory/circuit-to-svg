@@ -13,6 +13,7 @@ export function createSvgObjectsFromPcbPlatedHole(
   // Helper function to create pad number text
   const createPadNumberText = (x: number, y: number) => {
     // Try to get pad number from port_hints first, fallback to hole ID
+    //console.log('hole', hole)
     const padNumber = hole.port_hints?.[0] || hole.pcb_plated_hole_id?.replace(/^.*_/, "") || ""
     if (!padNumber) return null
     
@@ -25,7 +26,7 @@ export function createSvgObjectsFromPcbPlatedHole(
         y: y.toString(),
         fill: "#ffffff",
         "font-family": "Arial, sans-serif",
-        "font-size": "0.8",
+        "font-size": "20",
         "text-anchor": "middle",
         "dominant-baseline": "central",
       },
