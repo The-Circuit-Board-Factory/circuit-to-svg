@@ -446,11 +446,11 @@ function createSvgObjects({
     case "pcb_trace":
       return createSvgObjectsFromPcbTrace(elm, ctx)
     case "pcb_plated_hole":
-      return createSvgObjectsFromPcbPlatedHole(elm, ctx).filter(Boolean)
+      return createSvgObjectsFromPcbPlatedHole(elm, ctx, circuitJson).filter(Boolean)
     case "pcb_hole":
       return createSvgObjectsFromPcbHole(elm, ctx)
     case "pcb_smtpad":
-      return createSvgObjectsFromSmtPad(elm, ctx)
+      return createSvgObjectsFromSmtPad(elm, ctx, circuitJson)
     case "pcb_silkscreen_text":
       return createSvgObjectsFromPcbSilkscreenText(elm, ctx)
     case "pcb_silkscreen_rect":

@@ -6,6 +6,7 @@ import type { PcbContext } from "../convert-circuit-json-to-pcb-svg"
 export function createSvgObjectsFromPcbPlatedHole(
   hole: PCBPlatedHole,
   ctx: PcbContext,
+  circuitJson: AnyCircuitElement[],
 ): SvgObject[] {
   const { transform, colorMap } = ctx
   const [x, y] = applyToPoint(transform, [hole.x, hole.y])
@@ -16,6 +17,27 @@ export function createSvgObjectsFromPcbPlatedHole(
     //console.log('hole', hole)
     const padNumber = hole.port_hints?.[0] || hole.pcb_plated_hole_id?.replace(/^.*_/, "") || ""
     if (!padNumber) return null
+
+    const component = circuitJson.find(
+      (elm) => 
+        elm.type === "pcb_component" && 
+        elm.pcb_component_id === hole.pcb_component_id
+    )
+    //console.log('found parent component')
+
+    // Find the source component if this pad belongs to a component that is a copy
+    const sourceComponent = component?.type === "pcb_component" && component.source_component_id ? 
+      circuitJson.find(
+        (elm) => 
+          elm.type === "source_component" && 
+          elm.source_component_id === component.source_component_id
+      )
+      : null
+    //console.log('found source component', sourceComponent?.name)
+
+    //console.log("padNumber", padNumber, transform)
+
+    const textValue = sourceComponent ? `${sourceComponent.name}>${padNumber}` : padNumber
     
     return {
       name: "text",
@@ -33,7 +55,7 @@ export function createSvgObjectsFromPcbPlatedHole(
       children: [
         {
           type: "text",
-          value: padNumber,
+          value: textValue,
           name: "",
           attributes: {},
           children: [],

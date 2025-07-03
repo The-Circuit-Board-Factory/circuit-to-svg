@@ -6,6 +6,7 @@ import type { PcbContext } from "../convert-circuit-json-to-pcb-svg"
 export function createSvgObjectsFromSmtPad(
   pad: PcbSmtPad,
   ctx: PcbContext,
+  circuitJson: AnyCircuitElement[],
 ): any {
   const { transform, layer: layerFilter, colorMap } = ctx
 
@@ -15,7 +16,27 @@ export function createSvgObjectsFromSmtPad(
   const createPadNumberText = (x: number, y: number, transform?: string) => {
     const padNumber = pad.port_hints?.[0] || "X"
 
-    console.log("padNumber", padNumber, transform)
+    // Find the component this pad belongs to
+    const component = circuitJson.find(
+      (elm) => 
+        elm.type === "pcb_component" && 
+        elm.pcb_component_id === pad.pcb_component_id
+    )
+    //console.log('found parent component')
+
+    // Find the source component if this pad belongs to a component that is a copy
+    const sourceComponent = component?.type === "pcb_component" && component.source_component_id ? 
+      circuitJson.find(
+        (elm) => 
+          elm.type === "source_component" && 
+          elm.source_component_id === component.source_component_id
+      )
+      : null
+    //console.log('found source component', sourceComponent?.name)
+
+    //console.log("padNumber", padNumber, transform)
+
+    const textValue = sourceComponent ? `${sourceComponent.name}>${padNumber}` : padNumber
     
     return {
       name: "text",
@@ -25,7 +46,7 @@ export function createSvgObjectsFromSmtPad(
         y: "0",
         fill: "#ffffff",
         "font-family": "Arial, sans-serif",
-        "font-size": "20",
+        "font-size": "15",
         "text-anchor": "middle",
         "dominant-baseline": "central",
         transform: transform || `translate(${x} ${y})`,
@@ -33,7 +54,7 @@ export function createSvgObjectsFromSmtPad(
       children: [
         {
           type: "text",
-          value: padNumber,
+          value: textValue,
           name: "",
           attributes: {},
           children: [],
