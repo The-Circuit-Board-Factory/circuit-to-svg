@@ -13,23 +13,22 @@ export function createSvgObjectsFromSmtPad(
 
   // Helper function to create pad number text
   const createPadNumberText = (x: number, y: number, transform?: string) => {
-    const padNumber = pad.pcb_smtpad_id?.replace(/^.*_/, "") || ""
-    if (!padNumber) return null
+    const padNumber = pad.port_hints?.[0] || "X"
+
+    console.log("padNumber", padNumber, transform)
     
     return {
       name: "text",
       type: "element",
       attributes: {
-        class: "pcb-pad-number",
         x: "0",
         y: "0",
-        fill: pad.layer === "top" ? "#ffffff" : "#000000",
+        fill: "#ffffff",
         "font-family": "Arial, sans-serif",
-        "font-size": "0.8",
+        "font-size": "20",
         "text-anchor": "middle",
         "dominant-baseline": "central",
         transform: transform || `translate(${x} ${y})`,
-        "data-layer": pad.layer,
       },
       children: [
         {
@@ -66,7 +65,7 @@ export function createSvgObjectsFromSmtPad(
       }
       
       const padNumberText = createPadNumberText(x, y, `translate(${x} ${y}) rotate(${-pad.ccw_rotation})`)
-      
+
       return padNumberText ? [padRect, padNumberText] : [padRect]
     }
 
