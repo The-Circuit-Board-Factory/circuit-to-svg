@@ -37,7 +37,7 @@ export function createSvgObjectsFromPcbPlatedHole(
 
     //console.log("padNumber", padNumber, transform)
 
-    const textValue = sourceComponent ? `${sourceComponent.name}>${padNumber}` : padNumber
+    const textValue = sourceComponent ? `${sourceComponent.name}.${padNumber}` : padNumber
     
     return {
       name: "text",
@@ -48,7 +48,7 @@ export function createSvgObjectsFromPcbPlatedHole(
         y: y.toString(),
         fill: "#ffffff",
         "font-family": "Arial, sans-serif",
-        "font-size": "20",
+        "font-size": "10",
         "text-anchor": "middle",
         "dominant-baseline": "central",
       },

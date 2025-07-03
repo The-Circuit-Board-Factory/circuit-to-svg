@@ -36,7 +36,7 @@ export function createSvgObjectsFromSmtPad(
 
     //console.log("padNumber", padNumber, transform)
 
-    const textValue = sourceComponent ? `${sourceComponent.name}>${padNumber}` : padNumber
+    const textValue = sourceComponent ? `${sourceComponent.name}.${padNumber}` : padNumber
     
     return {
       name: "text",
@@ -46,7 +46,7 @@ export function createSvgObjectsFromSmtPad(
         y: "0",
         fill: "#ffffff",
         "font-family": "Arial, sans-serif",
-        "font-size": "15",
+        "font-size": "10",
         "text-anchor": "middle",
         "dominant-baseline": "central",
         transform: transform || `translate(${x} ${y})`,
