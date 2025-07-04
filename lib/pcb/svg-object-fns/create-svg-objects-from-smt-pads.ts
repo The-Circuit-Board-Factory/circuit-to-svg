@@ -36,7 +36,9 @@ export function createSvgObjectsFromSmtPad(
 
     //console.log("padNumber", padNumber, transform)
 
-    const textValue = sourceComponent ? `${sourceComponent.name}.${padNumber}` : padNumber
+    // don't show the chip number for now
+    //const textValue = sourceComponent ? `${sourceComponent.name}.${padNumber}` : padNumber
+    const textValue = padNumber
     
     return {
       name: "text",
