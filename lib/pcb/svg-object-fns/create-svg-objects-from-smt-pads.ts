@@ -38,7 +38,7 @@ export function createSvgObjectsFromSmtPad(
 
     // don't show the chip number for now
     //const textValue = sourceComponent ? `${sourceComponent.name}.${padNumber}` : padNumber
-    const textValue = padNumber
+    const textValue = padNumber.replace('pin', '')
     
     return {
       name: "text",
